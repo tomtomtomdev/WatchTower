@@ -72,6 +72,18 @@ class SchedulerService: ObservableObject {
         _ = await healthCheckService.performHealthCheck(for: endpoint)
     }
 
+    func triggerBatchHealthChecks(for endpoints: [APIEndpoint], delayBetweenChecks: TimeInterval = 1.0) async {
+        let enabledEndpoints = endpoints.filter { $0.isEnabled }
+
+        for (index, endpoint) in enabledEndpoints.enumerated() {
+            // Add delay before every check except the first one
+            if index > 0 {
+                try? await Task.sleep(nanoseconds: UInt64(delayBetweenChecks * 1_000_000_000))
+            }
+            await triggerImmediateCheck(for: endpoint)
+        }
+    }
+
     deinit {
         for task in tasks.values {
             task.cancel()

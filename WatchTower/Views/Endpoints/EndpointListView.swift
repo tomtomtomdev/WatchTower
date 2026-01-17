@@ -128,9 +128,7 @@ struct EndpointListView: View {
 
     private func checkNowBulk(_ endpoints: [APIEndpoint]) {
         Task {
-            for endpoint in endpoints {
-                await schedulerService.triggerImmediateCheck(for: endpoint)
-            }
+            await schedulerService.triggerBatchHealthChecks(for: endpoints)
         }
     }
 

@@ -74,9 +74,7 @@ struct DashboardView: View {
 
     private func checkAllEndpoints() {
         Task {
-            for endpoint in endpoints {
-                await schedulerService.triggerImmediateCheck(for: endpoint)
-            }
+            await schedulerService.triggerBatchHealthChecks(for: endpoints)
         }
     }
 }

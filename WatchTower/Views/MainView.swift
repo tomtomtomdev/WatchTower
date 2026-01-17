@@ -164,9 +164,7 @@ struct MultipleSelectionView: View {
 
     private func checkAllNow() {
         Task {
-            for endpoint in endpoints {
-                await schedulerService.triggerImmediateCheck(for: endpoint)
-            }
+            await schedulerService.triggerBatchHealthChecks(for: endpoints)
         }
     }
 
